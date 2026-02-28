@@ -1,0 +1,349 @@
+openapi: 3.0.3
+
+info:
+  title: Platform Core Engine API
+  description: >
+    This specification defines the core engine endpoints for authentication,
+    tenant resolution, low‑code metadata management, PBAC decision making,
+    event publishing metadata, and platform‑level introspection.
+  version: 1.0.0
+
+servers:
+  - url: https://engine.example.com
+    description: Production
+  - url: http://localhost:8080
+    description: Local development
+
+tags:
+  - name: health
+    description: Health endpoints
+  - name: identity
+    description: Identity provider mesh, JWT validation, token info
+  - name: tenants
+    description: Tenant registry and schema routing information
+  - name: policy
+    description: PBAC decision endpoints (OPA/Cedar)
+  - name: lowcode
+    description: Low‑code engine endpoints
+  - name: events
+    description: Event schema metadata
+
+paths:
+
+  ##########################################################
+  # HEALTH
+  ##########################################################
+
+  /api/healthz:
+    get:
+      tags: [health]
+      summary: Health probe
+      responses:
+        "200":
+          description: Engine is running
+
+  /api/readyz:
+    get:
+      tags: [health]
+      summary: Readiness probe
+      responses:
+        "200":
+          description: Engine is ready
+
+  ##########################################################
+  # IDENTITY PROVIDER MESH
+  ##########################################################
+
+  /api/identity/providers:
+    get:
+      tags: [identity]
+      summary: Get active identity providers
+      responses:
+        "200":
+          description: List active providers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+  /api/identity/validate:
+    post:
+      tags: [identity]
+      summary: Validate a JWT against the identity mesh
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+      responses:
+        "200":
+          description: Token is valid
+        "401":
+          description: Invalid token
+
+  /api/identity/introspect:
+    post:
+      tags: [identity]
+      summary: Extract claims and normalized identity context
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+      responses:
+        "200":
+          description: Claims returned
+          content:
+            application/json:
+              schema:
+                type: object
+
+  ##########################################################
+  # TENANT MANAGEMENT
+  ##########################################################
+
+  /api/tenants:
+    get:
+      tags: [tenants]
+      summary: List all tenants
+      responses:
+        "200":
+          description: Tenant list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tenantId:
+                      type: string
+                    name:
+                      type: string
+                    status:
+                      type: string
+
+    post:
+      tags: [tenants]
+      summary: Create or register a new tenant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tenantId: { type: string }
+                name: { type: string }
+      responses:
+        "201": { description: Created }
+
+  /api/tenants/{tenantId}:
+    get:
+      tags: [tenants]
+      summary: Get tenant details
+      parameters:
+        - name: tenantId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200": { description: OK }
+
+  ##########################################################
+  # POLICY ENGINE (PBAC/ABAC/RBAC)
+  ##########################################################
+
+  /api/policy/decision:
+    post:
+      tags: [policy]
+      summary: Evaluate PBAC/ABAC/RBAC policy via OPA/Cedar
+      description: >
+        The input object follows a stable schema: user, resource, action, context.
+        The result determines whether the operation is allowed.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                resource:
+                  type: object
+                action:
+                  type: string
+                context:
+                  type: object
+      responses:
+        "200":
+          description: Policy decision
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  allow:
+                    type: boolean
+                  reason:
+                    type: string
+
+  ##########################################################
+  # LOW-CODE ENGINE (SCREEN / WORKFLOW / MENU / I18N)
+  ##########################################################
+
+  /api/lowcode/schemas:
+    get:
+      tags: [lowcode]
+      summary: List available schema definitions
+      responses:
+        "200":
+          description: List of schemas
+
+  /api/lowcode/schemas/{domain}/{screen}/base:
+    get:
+      tags: [lowcode]
+      summary: Get BASE schema for a screen in a domain
+      parameters:
+        - name: domain
+          in: path
+          required: true
+          schema: { type: string }
+        - name: screen
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Base schema returned
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /api/lowcode/schemas/{domain}/{screen}/tenant/{tenantId}:
+    get:
+      tags: [lowcode]
+      summary: Get tenant override schema
+      parameters:
+        - name: domain
+          in: path
+          required: true
+          schema: { type: string }
+        - name: screen
+          in: path
+          required: true
+          schema: { type: string }
+        - name: tenantId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: OK }
+
+    post:
+      tags: [lowcode]
+      summary: Save tenant override schema
+      parameters:
+        - name: domain
+          in: path
+          required: true
+        - name: screen
+          in: path
+          required: true
+        - name: tenantId
+          in: path
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "201": { description: Saved }
+
+  /api/lowcode/menu:
+    get:
+      tags: [lowcode]
+      summary: Get merged menu definition
+      responses:
+        "200": { description: OK }
+
+  /api/lowcode/i18n/{tenantId}/{namespace}:
+    get:
+      tags: [lowcode]
+      summary: Get i18n namespace for tenant
+      parameters:
+        - name: tenantId
+          in: path
+        - name: namespace
+          in: path
+      responses:
+        "200": { description: OK }
+
+    post:
+      tags: [lowcode]
+      summary: Save i18n override
+      parameters:
+        - name: tenantId
+          in: path
+        - name: namespace
+          in: path
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "201": { description: Saved }
+
+  ##########################################################
+  # EVENT METADATA API
+  ##########################################################
+
+  /api/events/schemas:
+    get:
+      tags: [events]
+      summary: List all published event schemas
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    eventType: { type: string }
+                    version: { type: string }
+
+  /api/events/schemas/{eventType}:
+    get:
+      tags: [events]
+      summary: Get schema for a specific event type
+      parameters:
+        - name: eventType
+          in: path
+          required: true
+      responses:
+        "200":
+          description: Event schema
+          content:
+            application/json:
+              schema:
+                type: object
