@@ -1,0 +1,42 @@
+%% System Context (target)
+%% Render with Mermaid
+
+flowchart LR
+  user["End User"]
+  admin["Tenant Admin"]
+  dev["Platform Developer"]
+
+  ui["Low-Code UI (Generated Web App)"]
+  gateway["API Gateway / Edge (future)"]
+
+  engine["Platform Core Engine API\n(Identity, Tenants, Policy, Lowcode, Events)"]
+
+  md["MasterData Domain API\n(Party CRUD + Domain Events)"]
+  fin["Finance Domain API (future)"]
+  wh["Warehouse Domain API (future)"]
+
+  mesh["Event Mesh\n(Kafka / EventHubs / NATS) (future)"]
+
+  idp["Identity Provider Mesh\n(Entra/Okta/Keycloak/...) (future)"]
+  otel["Observability Stack\n(OTel Collector + Traces/Metrics/Logs)"]
+
+  user --> ui
+  admin --> ui
+
+  dev --> engine
+  dev --> md
+
+  ui --> gateway --> engine
+  ui --> gateway --> md
+
+  engine <--> idp
+
+  engine <--> mesh
+  md <--> mesh
+  fin <--> mesh
+  wh <--> mesh
+
+  engine --> otel
+  md --> otel
+  fin --> otel
+  wh --> otel

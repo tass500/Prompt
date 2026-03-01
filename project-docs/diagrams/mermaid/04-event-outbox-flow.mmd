@@ -1,0 +1,27 @@
+%% Domain event flow (outbox pattern) - current MVP + target evolution
+
+flowchart LR
+  subgraph MD["MasterData.Api"]
+    cmd["Party write endpoint\n(Create/Update/Delete)"]
+    outbox["Outbox (EventLog queue)\nMVP: in-memory"]
+    worker["OutboxPublisherWorker\nMVP: background move+log"]
+    published["PublishedEventLog\nMVP: in-memory"]
+
+    cmd --> outbox --> worker --> published
+  end
+
+  subgraph Target["Target (enterprise)"]
+    db[("Domain DB")]
+    outboxTbl[("Outbox Table")]
+    publisher["Outbox Publisher\n(retry, backoff)"]
+    mesh["Event Mesh\n(Kafka/EventHubs/NATS)"]
+    consumers["Consumers\n(Engine/Other Domains)"]
+    inbox[("Inbox/Dedupe Store")]
+
+    db --- outboxTbl
+    publisher --> mesh --> consumers --> inbox
+  end
+
+  outbox -.evolves to.-> outboxTbl
+  worker -.evolves to.-> publisher
+  published -.observability/audit.-> mesh

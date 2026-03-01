@@ -1,0 +1,26 @@
+%% Contract governance & CI flow
+
+flowchart TB
+  dev["Developer / Agent"] --> edit["Edit code + contracts/**/*.yaml"]
+  edit --> pr["Pull Request"]
+
+  pr --> ci["CI"]
+
+  subgraph Checks["Checks"]
+    build["dotnet build platform-core.sln"]
+    lintAll["npm run lint:contracts\n(global ruleset, warnings)"]
+    lintChangedStrict["npm run lint:contracts:changed:strict\n(strict ruleset on changed files)"]
+  end
+
+  ci --> build
+  ci --> lintAll
+  ci --> lintChangedStrict
+
+  build --> gate{All required checks green?}
+  lintAll --> gate
+  lintChangedStrict --> gate
+
+  gate -- Yes --> merge["Merge to main"]
+  gate -- No --> fix["Fix & push updates"] --> ci
+
+  merge --> deploy["(future) Build container + deploy preview/prod"]

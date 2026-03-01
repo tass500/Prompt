@@ -1,0 +1,9 @@
+# Code owners (path-based)
+
+/src/engine/** @engine-owner
+/src/domains/masterdata/** @masterdata-owner
+/contracts/** @platform-contracts-owner
+/project-docs/** @platform-docs-owner
+
+# Default fallback
+* @platform-owner

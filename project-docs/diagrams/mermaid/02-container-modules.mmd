@@ -1,0 +1,54 @@
+%% Container / Module view (target)
+
+flowchart TB
+  subgraph Repo["Monorepo"]
+    subgraph Contracts["contracts/"]
+      c_engine["engine/openapi.yaml"]
+      c_md["domains/masterdata/openapi.yaml"]
+    end
+
+    subgraph Engine["src/engine/Engine.Api"]
+      e_api["API Endpoints"]
+      e_mid["Middleware\nX-Correlation-Id, X-Tenant-Id"]
+      e_idem["Idempotency (in-memory)"]
+      e_policy["Policy Decision\n(configurable deny-by-default)"]
+      e_lowcode["Lowcode Schemas\n(base + tenant overrides)"]
+      e_events["Event Schema Registry\n(loaded from contracts/domains/*)"]
+      e_otel["OpenTelemetry\n(trace+metrics, OTLP)"]
+    end
+
+    subgraph MasterData["src/domains/masterdata/MasterData.Api"]
+      md_api["API Endpoints\nParty CRUD"]
+      md_mid["Middleware\nX-Correlation-Id, X-Tenant-Id"]
+      md_idem["Idempotency (in-memory)"]
+      md_outbox["Event Outbox (in-memory)"]
+      md_worker["Outbox Publisher Worker\n(simulated publish)"]
+      md_pub["Published Event Log (in-memory)"]
+      md_otel["OpenTelemetry\n(trace+metrics, OTLP)"]
+    end
+
+    subgraph Docs["project-docs/"]
+      truth["truth/*"]
+      adr["docs/adr/*"]
+      playbooks["playbooks/*"]
+      diagrams["diagrams/mermaid/*"]
+    end
+  end
+
+  c_md --> e_events
+  truth --> Engine
+  truth --> MasterData
+  adr --> Engine
+  adr --> MasterData
+
+  e_mid --> e_api
+  e_idem --> e_api
+  e_policy --> e_api
+  e_lowcode --> e_api
+  e_events --> e_api
+  e_otel --> e_api
+
+  md_mid --> md_api
+  md_idem --> md_api
+  md_outbox --> md_worker --> md_pub
+  md_otel --> md_api

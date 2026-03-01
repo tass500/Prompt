@@ -1,0 +1,44 @@
+%% Request flow (runtime) - headers, idempotency, traces
+
+sequenceDiagram
+  autonumber
+  participant Client as Client/UI
+  participant API as Service API
+  participant Corr as CorrelationIdMiddleware
+  participant Tenant as TenantIdMiddleware
+  participant OTel as OpenTelemetry (AspNetCore instr.)
+  participant Idem as Idempotency Store (in-memory)
+  participant Handler as Endpoint Handler
+
+  Client->>API: HTTP Request
+  activate API
+  API->>OTel: Start server span
+  API->>Corr: Invoke
+  Corr->>Corr: Ensure X-Correlation-Id (generate if missing)
+  Corr-->>Client: (later) Response header X-Correlation-Id
+
+  Corr->>Tenant: Invoke
+  Tenant->>Tenant: Validate X-Tenant-Id (except health/swagger)
+  Tenant->>OTel: Tag Activity tenant_id
+
+  Tenant->>Handler: Invoke
+
+  alt Write endpoint (POST/PUT/PATCH)
+    Handler->>Idem: Check Idempotency-Key + request hash
+    alt Existing entry, same hash
+      Idem-->>Handler: Stored response
+      Handler-->>Client: Replay response (200/201)
+    else Existing entry, different hash
+      Handler-->>Client: 409 Conflict
+    else New
+      Handler->>Handler: Execute command
+      Handler->>Idem: Store response (status/body/location)
+      Handler-->>Client: Normal response
+    end
+  else Read endpoint (GET)
+    Handler->>Handler: Execute query
+    Handler-->>Client: 200 OK
+  end
+
+  API->>OTel: End server span
+  deactivate API
