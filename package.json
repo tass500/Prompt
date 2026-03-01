@@ -1,0 +1,13 @@
+{
+  "name": "platform-core",
+  "private": true,
+  "scripts": {
+    "lint:contracts": "spectral lint \"contracts/**/*.yaml\"",
+    "lint:contracts:changed": "node scripts/lint-changed-contracts.mjs",
+    "lint:contracts:changed:strict": "node scripts/lint-changed-contracts.mjs --ruleset ./.spectral-strict.yaml",
+    "docs:drift:reminder": "node scripts/docs-drift-reminder.mjs"
+  },
+  "devDependencies": {
+    "@stoplight/spectral-cli": "^6.11.1"
+  }
+}
