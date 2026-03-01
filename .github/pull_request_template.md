@@ -1,40 +1,40 @@
-## Summary
+## Összefoglaló
 
-Describe what changed and why.
+Írd le röviden, mi változott és miért.
 
-## Scope
+## Hatókör
 
 - [ ] Engine API
 - [ ] MasterData API
-- [ ] Contracts (`contracts/**`)
-- [ ] Docs
+- [ ] Contractok (`contracts/**`)
+- [ ] Dokumentáció
 - [ ] CI/Scripts
 
-## Contracts
+## Contractok
 
-- [ ] No contract changes
-- [ ] Contract changes included
+- [ ] Nincs contract változás
+- [ ] Van contract változás
 - [ ] Breaking change
 
-If contract changes:
+Ha van contract változás:
 
-- Updated file(s):
-- Compatibility note:
+- Frissített fájl(ok):
+- Kompatibilitási megjegyzés / migrációs infó:
 
-## Risk
+## Kockázat
 
-- Potential impact:
-- Rollback plan:
+- Várható hatás:
+- Rollback terv:
 
-## Validation
+## Validáció
 
-Describe how you validated the change.
+Írd le, hogyan validáltad a változtatást.
 
-- Commands run:
-- Manual checks:
+- Futtatott parancsok:
+- Manuális ellenőrzések:
 
-## Observability
+## Megfigyelhetőség (observability)
 
-- [ ] Correlation ID preserved
-- [ ] Tenant ID preserved
-- [ ] Idempotency behavior verified (write endpoints)
+- [ ] Correlation ID megmaradt
+- [ ] Tenant ID megmaradt
+- [ ] Idempotency viselkedés ellenőrizve (write endpointok)

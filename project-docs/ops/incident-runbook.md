@@ -1,47 +1,47 @@
-# Incident runbook (baseline)
+# Incidens runbook (baseline)
 
-## Triage checklist
+## Triage ellenőrzőlista
 
-- Confirm scope: Engine API, MasterData API, or both.
-- Identify impacted tenants (from `X-Tenant-Id` in logs/telemetry).
-- Capture correlation IDs for sample failing requests.
+- Erősítsd meg a scope-ot: Engine API, MasterData API, vagy mindkettő.
+- Azonosítsd az érintett tenantokat (logok/telemetria `X-Tenant-Id` alapján).
+- Gyűjts correlation ID-kat néhány hibás mintakéréshez.
 
-## Common scenarios
+## Gyakori scenariók
 
-### Elevated 5xx
+### Emelkedett 5xx
 
-- Check recent deployments/merges.
-- Use traces to find the failing endpoint and exception.
-- If rollback is available, prefer rollback over hotfix.
+- Ellenőrizd a legutóbbi deploy/merge eseményeket.
+- Trace-ek segítségével azonosítsd a hibázó endpointot és exception-t.
+- Ha van rollback, részesítsd előnyben a rollback-et a hotfix-szel szemben.
 
-### Idempotency conflicts (409 spikes)
+### Idempotency konfliktusok (409 spike)
 
-- Validate client behavior: same `Idempotency-Key` reused with different payload.
-- Confirm hashing behavior and store retention policy (MVP is in-memory).
+- Ellenőrizd a kliens viselkedést: ugyanaz az `Idempotency-Key` különböző payload-dal lett újrahasználva.
+- Erősítsd meg a hash-elés működését és a store retention policy-t (MVP: in-memory).
 
-### Outbox backlog / publisher not advancing
+### Outbox backlog / publisher nem halad
 
-- Confirm background worker is running.
-- Inspect outbox queue size (MVP in-memory).
-- If stuck, restart service (MVP) and capture logs.
+- Ellenőrizd, hogy a background worker fut-e.
+- Nézd meg az outbox queue méretét (MVP: in-memory).
+- Ha beragadt, indítsd újra a service-t (MVP) és mentsd el a logokat.
 
-### Tenant header errors
+### Tenant header hibák
 
-- Verify gateway/client is sending `X-Tenant-Id`.
-- Confirm excluded paths (health/swagger) behave as expected.
+- Ellenőrizd, hogy a gateway/kliens küldi-e az `X-Tenant-Id` header-t.
+- Erősítsd meg, hogy a kizárt útvonalak (health/swagger) a vártnak megfelelően működnek.
 
-## Communications
+## Kommunikáció
 
-- Post an initial status update with:
-  - time detected
-  - impacted services
-  - impacted tenants (if known)
-  - next update ETA
+- Küldj egy első státusz update-et az alábbiakkal:
+  - észlelés ideje
+  - érintett service-ek
+  - érintett tenantok (ha ismert)
+  - következő update várható ideje (ETA)
 
-## Post-incident
+## Incidens utáni teendők
 
-- Create a short postmortem entry:
+- Készíts rövid postmortem bejegyzést:
   - trigger
   - root cause
   - mitigation
-  - follow-ups (tests, monitors, docs)
+  - follow-up feladatok (tesztek, monitorok, doksi)

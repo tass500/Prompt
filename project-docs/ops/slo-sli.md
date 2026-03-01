@@ -1,33 +1,33 @@
 # SLO/SLI baseline
 
-## Services
+## Service-ek
 
 - Engine API
 - MasterData API
 
-## Availability
+## Rendelkezésre állás (availability)
 
-- **SLI**: Successful request ratio (2xx/3xx) over total requests.
-- **SLO (initial)**: 99.5% monthly per service.
+- **SLI**: Sikeres kérések aránya (2xx/3xx) az összes kéréshez képest.
+- **SLO (kezdeti)**: 99.5% havi szinten service-enként.
 
-## Latency
+## Késleltetés (latency)
 
-- **SLI**: p95 request duration per endpoint group.
-- **SLO (initial)**:
-  - p95 < 500ms for read endpoints
-  - p95 < 1000ms for write endpoints
+- **SLI**: p95 request duration endpoint csoportonként.
+- **SLO (kezdeti)**:
+  - p95 < 500ms read endpointokra
+  - p95 < 1000ms write endpointokra
 
-## Errors
+## Hibák (errors)
 
-- **SLI**: 5xx rate per service.
-- **SLO (initial)**: < 0.5% 5xx.
+- **SLI**: 5xx arány service-enként.
+- **SLO (kezdeti)**: < 0.5% 5xx.
 
-## Multi-tenancy correctness
+## Multi-tenancy helyesség
 
-- **SLI**: Requests rejected due to missing/invalid `X-Tenant-Id` (should be low in prod, high in test harness).
-- **SLO (initial)**: 0 cross-tenant leakage incidents.
+- **SLI**: Hiányzó/érvénytelen `X-Tenant-Id` miatt elutasított kérések (prod környezetben alacsony, teszt harness-ben magas érték várható).
+- **SLO (kezdeti)**: 0 cross-tenant leakage incident.
 
-## Telemetry requirements
+## Telemetria követelmények
 
-- Correlation and tenant tags are present on spans.
-- Traces/metrics exported via OTLP when configured.
+- A correlation és tenant tagek jelen vannak a span-eken.
+- Trace-ek/metric-ek OTLP-n keresztül exportálódnak, ha konfigurálva van.

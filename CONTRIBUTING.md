@@ -1,41 +1,41 @@
-# Contributing
+# Közreműködés
 
-## Ways of working
+## Munkamódszer
 
-- Changes flow through Pull Requests.
-- Prefer small, reviewable PRs.
-- Contracts (`contracts/**`) are treated as first-class artifacts.
+- A változtatások Pull Requesteken keresztül mennek.
+- Részesítsd előnyben a kicsi, könnyen review-zható PR-eket.
+- A contractok (`contracts/**`) első osztályú artefaktok.
 
 ## Branching
 
-- Default branch: `main`
-- Create feature branches from `main`.
+- Alapértelmezett branch: `main`
+- Feature brancheket a `main`-ből hozz létre.
 
-## Local checks (recommended)
+## Lokális ellenőrzések (ajánlott)
 
 ### Build
 
 - `dotnet build platform-core.sln`
 
-### Contracts lint
+### Contract lint
 
 - `npm run lint:contracts`
-- For strict linting on changed files: `npm run lint:contracts:changed:strict`
+- Szigorú lint csak a változott fájlokra: `npm run lint:contracts:changed:strict`
 
-### Docs drift reminder
+### Dokumentáció drift emlékeztető
 
 - `npm run docs:drift:reminder`
 
-## Pull Request expectations
+## Pull Request elvárások
 
-- Update contracts when you change externally visible API behavior.
-- Keep API writes idempotent where required.
-- Ensure correlation and tenant headers are preserved.
-- Include a short validation note (how you tested).
+- Frissítsd a contractokat, ha a külsőleg látható API viselkedés változik.
+- Tartsd meg az idempotens írási működést ott, ahol kötelező.
+- Biztosítsd, hogy a correlation és tenant headerek megmaradjanak.
+- Adj rövid validációs leírást (hogyan tesztelted).
 
-## Commit messages
+## Commit üzenetek
 
-Use concise, imperative messages.
+Használj rövid, felszólító módú üzeneteket.
 
-- Good: "Add idempotency conflict handling"
-- Avoid: "wip" / "fix" without context
+- Jó: "Add idempotency conflict handling"
+- Kerüld: "wip" / "fix" kontextus nélkül

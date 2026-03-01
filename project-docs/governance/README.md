@@ -1,6 +1,6 @@
 # Governance
 
-This folder contains governance documents used to keep development consistent and enterprise-ready.
+Ez a mappa olyan governance dokumentumokat tartalmaz, amelyek a fejlesztést konzisztenssé és enterprise-készre teszik.
 
 - `versioning.md`
 - `adr-guidelines.md`

@@ -1,34 +1,35 @@
-# Security Policy
+# Biztonsági irányelv
 
-## Supported versions
+## Támogatott verziók
 
-This repository is currently in active development.
+Ez a repository jelenleg aktív fejlesztés alatt áll.
 
-- Security fixes are applied on the `main` branch.
-- Tagged releases (when introduced) will list their support window in `CHANGELOG.md`.
+- Biztonsági javítások a `main` branchen kerülnek alkalmazásra.
+- A taggelt release-ek (ha bevezetésre kerülnek) a támogatási időablakukat a `CHANGELOG.md` fájlban rögzítik.
 
-## Reporting a vulnerability
+## Sérülékenység bejelentése
 
-Please do not open a public issue for security-sensitive reports.
+Biztonsági szempontból érzékeny jelentéshez kérlek ne nyiss nyilvános issue-t.
 
-- Preferred: contact the maintainers privately (internal channel).
-- If you do not have an internal channel, open a minimal issue with **no exploit details** and ask for a private contact path.
+- Preferált: vedd fel privátban a kapcsolatot a karbantartókkal (belső csatornán).
+- Ha nincs belső csatornád, nyiss egy minimális issue-t **exploit részletek nélkül**, és kérj privát kapcsolati lehetőséget.
 
-Include:
+Kérlek, ezt tartalmazza:
 
-- A clear description of the issue and impact
-- Affected component(s) (Engine API, domain APIs, contracts, scripts)
-- Steps to reproduce (redacted if needed)
-- Suggested remediation (if known)
+- A hiba és a hatás egyértelmű leírása
+- Érintett komponensek (Engine API, domain API-k, contractok, scriptek)
+- Reprodukciós lépések (szükség esetén anonimizálva/kitakarva)
+- Javasolt javítás/mitigáció (ha ismert)
 
-## Dependency vulnerability handling
+## Dependency sérülékenységek kezelése
 
-- High/Critical severity findings are treated as **stop-ship** when CI release gates are enabled.
-- Until a formal gate is enabled, we apply **targeted** remediation:
-  - Update/patch via direct dependency bump when possible
-  - Pin/override only with explicit rationale and follow-up removal task
+- High/Critical severity találatokat **stop-ship** kategóriának tekintünk, amikor a CI release gate-ek engedélyezve vannak.
+- Amíg nincs formális gate, **célzott** kezelést alkalmazunk:
+  - Update/patch közvetlen dependency verzióemeléssel, amikor lehetséges
+  - Pin/override csak egyértelmű indoklással és későbbi eltávolítási follow-up feladattal
 
-## Secrets
+## Titkok (secrets)
 
-- Never commit secrets (API keys, tokens, passwords) to the repository.
-- Use environment variables / secret stores for local dev and CI.
+- Soha ne commitolj titkokat (API key-eket, tokeneket, jelszavakat) a repository-ba.
+- Lokális fejlesztéshez és CI-hez környezeti változókat / secret store-okat használj.
+

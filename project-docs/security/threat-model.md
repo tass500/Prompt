@@ -1,49 +1,49 @@
-# Threat model (MVP)
+# Fenyegetési modell (MVP)
 
-## Scope
+## Hatókör
 
 - Platform Core Engine API (`src/engine/Engine.Api`)
-- Domain APIs (initial: `MasterData.Api`)
-- API contracts (`contracts/**`)
-- Cross-cutting headers: `X-Correlation-Id`, `X-Tenant-Id`, `Idempotency-Key`
-- Eventing (MVP outbox + published log; target event mesh)
+- Domain API-k (kezdetben: `MasterData.Api`)
+- API contractok (`contracts/**`)
+- Cross-cutting headerek: `X-Correlation-Id`, `X-Tenant-Id`, `Idempotency-Key`
+- Eventing (MVP outbox + published log; target: event mesh)
 
-## Key assets
+## Fő értékek (assetek)
 
-- Tenant data isolation
-- Identity/authorization decisions (policy decision endpoint)
-- Idempotency store integrity
-- Contract integrity (governed changes)
-- Observability telemetry integrity (trace correlation)
+- Tenant adatizoláció
+- Identity/authorization döntések (policy decision endpoint)
+- Idempotency store integritása
+- Contract integritás (governed changes)
+- Observability telemetria integritása (trace korreláció)
 
-## Trust boundaries
+## Trust boundary-k
 
-- Client/UI to API boundary (public HTTP)
-- Inter-service boundary (Engine <-> domains)
-- Storage boundary (in-memory now; DB/event mesh later)
+- Client/UI → API határ (publikus HTTP)
+- Service-to-service határ (Engine <-> domainok)
+- Storage határ (most in-memory; később DB/event mesh)
 
-## Primary threats (high-level)
+## Fő fenyegetések (magas szint)
 
-- Tenant boundary bypass via missing/forged `X-Tenant-Id`
-- Replay/duplication of writes without idempotency
-- Unauthorized access due to permissive default policy
-- Injection of malformed payloads into APIs/contracts
-- Event duplication and consumer side effects (no dedupe)
-- Sensitive data leakage via logs/telemetry
+- Tenant boundary megkerülése hiányzó/hamis `X-Tenant-Id` miatt
+- Írások replay/duplikáció idempotency nélkül
+- Jogosulatlan hozzáférés túl engedékeny default policy miatt
+- Hibás/malformált payloadok injektálása API-kba/contractokba
+- Event duplikáció és consumer oldali mellékhatások (nincs dedupe)
+- Érzékeny adatok kiszivárgása logok/telemetria útján
 
-## MVP mitigations in this repo
+## MVP mitigációk ebben a repo-ban
 
-- Tenant header enforcement middleware
-- Correlation ID propagation
-- Idempotency key enforcement on write endpoints
-- Deny-by-default policy decision (configurable)
-- Contract linting in CI (Spectral)
-- OpenTelemetry with consistent tagging (`correlation_id`, `tenant_id`)
+- Tenant header érvényesítés middleware-ben
+- Correlation ID propagálás
+- Idempotency key érvényesítés író endpointokon
+- Deny-by-default policy decision (konfigurálható)
+- Contract lint CI-ben (Spectral)
+- OpenTelemetry konzisztens tagekkel (`correlation_id`, `tenant_id`)
 
-## Open items (when moving beyond MVP)
+## Nyitott tételek (MVP utáni lépések)
 
-- Replace in-memory stores with durable persistence
-- Introduce authN/authZ (OIDC) and service-to-service identity
-- Add rate limiting / WAF / API gateway
-- Add outbox persistence + retries + DLQ strategy
-- Add inbox/dedupe store for event consumers
+- In-memory store-ok lecserélése tartós perzisztenciára
+- AuthN/AuthZ bevezetése (OIDC) és service-to-service identity
+- Rate limiting / WAF / API gateway bevezetése
+- Outbox perzisztencia + retry + DLQ stratégia
+- Inbox/dedupe store az event consumer-ekhez

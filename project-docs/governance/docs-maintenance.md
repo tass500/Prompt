@@ -1,61 +1,61 @@
-# Documentation maintenance (docs drift)
+# Dokumentáció karbantartás (docs drift)
 
-## Goal
+## Cél
 
-Keep documentation accurate and useful by ensuring it changes together with code and contracts.
+A dokumentáció legyen pontos és használható: mozogjon együtt a kóddal és a contractokkal.
 
-## Default operating mode
+## Alapértelmezett működés
 
-- When a change has a **clear relationship** to a document, update the document in the same PR.
-- When the relationship is **not clear**, add a note in the PR and propose options; the owner/reviewer decides.
+- Ha egy változtatás és egy dokumentum kapcsolata **egyértelmű**, a dokumentumot ugyanabban a PR-ban frissítsd.
+- Ha a kapcsolat **nem egyértelmű**, írj megjegyzést a PR-ba és adj opciókat; az owner/reviewer dönt.
 
-In agent-assisted development, the default behavior is:
+Ügynök-asszisztált fejlesztésnél az alapértelmezett működés:
 
-- The agent warns about likely documentation drift, and
-- The agent updates documentation automatically when the relationship is clear.
+- Az ügynök figyelmeztet a várható dokumentáció drift-re, és
+- az ügynök automatikusan frissíti a dokumentációt, amikor a kapcsolat egyértelmű.
 
 ## Ownership
 
-- `SECURITY.md` and `project-docs/security/**`: platform security owner (or security champion)
+- `SECURITY.md` és `project-docs/security/**`: platform security owner (vagy security champion)
 - `CONTRIBUTING.md`, PR template: platform engineering enablement owner
 - `CODEOWNERS`: tech lead / engineering manager
-- `project-docs/ops/**`: service owners (Engine / domains)
+- `project-docs/ops/**`: service owner-ök (Engine / domainok)
 - `project-docs/governance/**`: platform governance owner
 - `project-docs/diagrams/**`: platform architecture owner
 
-## Update triggers (practical)
+## Frissítési triggerek (gyakorlatban)
 
 ### Contracts
 
-If you change `contracts/**`:
+Ha a `contracts/**` változik:
 
-- Update `project-docs/governance/versioning.md` if the change is breaking or introduces a new compatibility rule.
-- Ensure PR description includes compatibility/migration notes (PR template).
+- Frissítsd a `project-docs/governance/versioning.md` fájlt, ha breaking change történt vagy új kompatibilitási szabályt vezetsz be.
+- A PR leírás tartalmazzon kompatibilitási / migrációs megjegyzéseket (PR template).
 
-### Cross-cutting behavior
+### Cross-cutting viselkedés
 
-If you change correlation/tenant/idempotency/observability behavior:
+Ha a correlation/tenant/idempotency/observability viselkedés változik:
 
-- Update `project-docs/security/threat-model.md` (attack surface / mitigations).
-- Update `project-docs/ops/incident-runbook.md` if a new failure mode is introduced.
+- Frissítsd a `project-docs/security/threat-model.md` fájlt (attack surface / mitigációk).
+- Frissítsd a `project-docs/ops/incident-runbook.md` fájlt, ha új hibamód jelenik meg.
 
-### CI policies / gates
+### CI policy-k / gate-ek
 
-If you change build/lint/audit behavior:
+Ha a build/lint/audit viselkedés változik:
 
-- Update `CONTRIBUTING.md` (local checks / expectations).
-- Update `SECURITY.md` if audit policy changes.
+- Frissítsd a `CONTRIBUTING.md` fájlt (lokális ellenőrzések / elvárások).
+- Frissítsd a `SECURITY.md` fájlt, ha az audit policy változik.
 
-### Service topology
+### Service topológia
 
-If you add a new domain/service/module:
+Ha új domain/service/module kerül be:
 
-- Update `CODEOWNERS`.
-- Update `project-docs/ops/slo-sli.md` to include the new service.
-- Update `project-docs/diagrams/mermaid/*` if architecture/flows change.
+- Frissítsd a `CODEOWNERS` fájlt.
+- Frissítsd a `project-docs/ops/slo-sli.md` fájlt, hogy tartalmazza az új service-t.
+- Frissítsd a `project-docs/diagrams/mermaid/*` diagramokat, ha az architektúra/folyamatok változnak.
 
-## Suggested PR checklist items
+## Javasolt PR checklist elemek
 
-- Docs updated (clear relationship)
-- Docs drift note added (unclear relationship)
-- Owners reviewed changes when applicable
+- Dokumentáció frissítve (egyértelmű kapcsolat)
+- Docs drift megjegyzés hozzáadva (nem egyértelmű kapcsolat)
+- Ownerök review-zták, amikor releváns

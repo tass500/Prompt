@@ -1,24 +1,24 @@
-# ADR guidelines
+# ADR irányelvek
 
-## When to write an ADR
+## Mikor írjunk ADR-t?
 
-Write an ADR when introducing or changing:
+Készíts ADR-t, ha az alábbiak közül bármit bevezetsz vagy érdemben módosítasz:
 
-- Cross-cutting concerns (auth, multi-tenancy, idempotency, observability)
-- Eventing strategy (outbox, schema, mesh)
-- Contract governance rules and CI gates
-- Storage choices (in-memory -> database)
-- Deployment model (containers, gateway, service mesh)
+- Cross-cutting témák (authentikáció, multi-tenancy, idempotencia, megfigyelhetőség)
+- Eventing stratégia (outbox, séma, mesh)
+- Szerződési irányítási szabályok és CI kapuk
+- Tárolási döntések (in-memory -> adatbázis)
+- Telepítési modell (konténerek, átjáró, szolgáltatási mesh)
 
-## Minimum content
+## Minimális tartalom
 
-- Context
-- Decision
-- Status
-- Consequences
-- Alternatives considered (brief)
+- Kontextus
+- Döntés
+- Állapot
+- Következmények
+- Megfontolt alternatívák (röviden)
 
 ## Ownership
 
-- Proposed by the implementer.
-- Reviewed by affected owners (Engine/Domain/Contracts).
+- A javaslatot az implementáló hozza.
+- Review: érintett ownerök (Engine/Domain/Contracts).

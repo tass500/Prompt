@@ -1,19 +1,19 @@
-# Changelog
+# Változásnapló
 
-All notable changes to this repository will be documented in this file.
+Ebben a fájlban rögzítünk minden jelentősebb változást a repository-ban.
 
-The format is based on Keep a Changelog.
+A formátum a Keep a Changelog ajánlásán alapul.
 
-## Unreleased
+## Nem kiadott (Unreleased)
 
-### Added
-
-- 
-
-### Changed
+### Hozzáadva
 
 - 
 
-### Fixed
+### Módosítva
+
+- 
+
+### Javítva
 
 - 

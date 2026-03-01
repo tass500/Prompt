@@ -1,5 +1,5 @@
-# Security
+# Biztonság
 
-Security-related documents.
+Biztonsággal kapcsolatos dokumentumok.
 
 - `threat-model.md`

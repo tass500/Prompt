@@ -1,30 +1,30 @@
-# Versioning policy
+# Verziózási irányelv
 
-## Scope
+## Hatókör
 
-- API contracts in `contracts/**`
-- Events (when formalized)
+- API contractok a `contracts/**` alatt
+- Események (ha formalizálásra kerülnek)
 
-## Principles
+## Alapelvek
 
-- Prefer additive changes.
-- Breaking changes require explicit versioning.
-- Contracts are reviewed and linted in CI.
+- Részesítsd előnyben az additív változtatásokat.
+- A breaking change-ek explicit verziózást igényelnek.
+- A contractok review-zva és lintelve vannak CI-ben.
 
-## API versioning (initial)
+## API verziózás (kezdeti)
 
-- Current MVP is versionless at the routing level.
-- Breaking changes to externally consumed endpoints require one of:
-  - new endpoint/path, or
-  - explicit version segment introduction for the affected area.
+- A jelenlegi MVP útvonal szinten verziótlan.
+- Külső fogyasztók által használt endpointok breaking change-e esetén az alábbiak egyike kötelező:
+  - új endpoint/path, vagy
+  - explicit verzió szegmens bevezetése az érintett részre.
 
-## Contract change categories
+## Contract változtatási kategóriák
 
-- **Patch**: typo/docs fixes, schema clarifications, no behavior change.
-- **Minor**: additive fields/endpoints, backward compatible.
-- **Major**: removals, behavior changes, tightening validation that breaks clients.
+- **Patch**: elírás/doksi javítás, séma pontosítás, viselkedés nem változik.
+- **Minor**: additív mezők/endpointok, visszafelé kompatibilis.
+- **Major**: eltávolítás, viselkedés változás, olyan validáció-szigorítás, ami kliens oldalon törést okoz.
 
 ## Deprecation
 
-- Mark deprecations in contracts and document the removal timeline.
-- Provide migration notes in PR description.
+- Jelöld a deprecálást a contractokban, és dokumentáld az eltávolítás ütemezését.
+- Adj migrációs megjegyzéseket a PR leírásban.
